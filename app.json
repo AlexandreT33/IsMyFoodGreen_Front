@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "isMyFoodGreen",
-    "slug": "isMyFoodGreen",
+    "slug": "ismyfoodgreen",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -25,6 +25,20 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "66ba9820-139f-4643-9ea5-7932ab8c35f1"
+      }
+    },
+    "plugins": [
+      [
+        "expo-barcode-scanner",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access camera."
+        }
+      ]
+    ],
+    "owner": "alexandre33"
   }
 }
