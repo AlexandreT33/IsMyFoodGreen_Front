@@ -34,6 +34,7 @@ export default function QR_Scanner(props) {
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
       />
+      
     </View>
   );
 }
