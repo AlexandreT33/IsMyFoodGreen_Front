@@ -1,11 +1,17 @@
 import React, { useState, useEffect} from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, Dimensions, Image } from 'react-native';
 import QR_Scanner from './src/tools/Scanner'
 
 export default function App() {
     const [showQrScanner, setshowQrScanner] = useState(false);
     const [scanValue, setScanValue] = useState(null);
     const [productInfo, setProductInfo] = useState({});
+
+    const windowWidth = Dimensions.get('window').width;
+    const windowHeight = Dimensions.get('window').height;
+
+    const imageWidth = (windowWidth * 50) / 100;
+    const imageHeight = (windowHeight * 25) / 100;
 
     useEffect(() => {
         if (scanValue != null) {
@@ -42,14 +48,29 @@ export default function App() {
     
     <View style={{flex:1}}>
         <View style={styles.topbox}>
-            {productInfo === null ? <></> : <Text>Brand: {productInfo.brands}</Text> }
+            
             {showQrScanner === true ? <QR_Scanner setScanValue={setScanValue} /> : <></> }
+            <View style={
+                { 
+                    width: imageWidth, 
+                    height: imageHeight,
+                    margin: 20,
+                    marginTop: 50,
+
+                }}>
+                <Image
+                    source={{ uri: "https://images.openfoodfacts.org/images/products/306/832/012/4377/front_en.3.400.jpg" }} // Replace with the URL of your image
+                    style={{ flex:1 }}
+                />
+            </View>
+            
+
         </View>
 
         <View style={styles.bottombox}>
-            
+            {productInfo === null ? <></> : <Text>Brand: {productInfo.brands}</Text> }
             <Button
-                title={showQrScanner === true ? "Ouvrir le scanner": "Fermer le scanner"}
+                title={showQrScanner === true ? "Fermer le scanner" : "Ouvrir le scanner" }
                 color="#f194ff"
                 onPress={() => {setshowQrScanner(!showQrScanner)}}
             />
@@ -60,11 +81,16 @@ export default function App() {
 
 const styles = StyleSheet.create({
   topbox: {
-    backgroundColor: '#00FF00',
+    backgroundColor: '#D3D3D3',
+    alignItems: 'center',
     flex: 15
   },
+  topbox_img: {
+    flex: 1,
+    margin: 20,
+  },
   bottombox: {
-    backgroundColor: '#FFFF00',
+    backgroundColor: '#2E2E2E',
     flex: 1,
     padding: 20,
   }
