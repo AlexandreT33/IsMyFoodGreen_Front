@@ -70,8 +70,8 @@ export default function App() {
         <View style={styles.bottombox}>
             {productInfo === null ? <></> : <Text>Brand: {productInfo.brands}</Text> }
             <Button
-                title={showQrScanner === true ? "Fermer le scanner" : "Ouvrir le scanner" }
-                color="#f194ff"
+                title={showQrScanner === true ? "Ouvrir le scanner": "Fermer le scanner"}
+                color="#008080"
                 onPress={() => {setshowQrScanner(!showQrScanner)}}
             />
         </View>
@@ -81,8 +81,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   topbox: {
-    backgroundColor: '#D3D3D3',
-    alignItems: 'center',
+    backgroundColor: '#00FF00',
     flex: 15
   },
   topbox_img: {
