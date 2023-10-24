@@ -50,7 +50,7 @@ export default function App() {
             
             <Button
                 title={showQrScanner === true ? "Ouvrir le scanner": "Fermer le scanner"}
-                color="#f194ff"
+                color="#008080"
                 onPress={() => {setshowQrScanner(!showQrScanner)}}
             />
         </View>
@@ -60,11 +60,11 @@ export default function App() {
 
 const styles = StyleSheet.create({
   topbox: {
-    backgroundColor: '#00FF00',
+    backgroundColor: '#D3D3D3',
     flex: 15
   },
   bottombox: {
-    backgroundColor: '#FFFF00',
+    backgroundColor: '#2E2E2E',
     flex: 1,
     padding: 20,
   }
