@@ -80,37 +80,36 @@ export default function App() {
         <View style={styles.topbox}>
             {showQrScanner === true ? <QR_Scanner setScanValue={setScanValue} /> :  
             <View style={{flex: 1}}>
-                { productInfo !== null ? 
+                { 
+                productInfo !== null ? 
+                <Image
+                    source={logo} 
+                    style={
+                         { 
+                            width: logoWidth, 
+                            height: logoHeight,
+                            marginTop: 50,
+                        }}
+                    />
+                :
+                <View style={{flex: 1}}>
                     <Image
-                        source={logo} 
-                        style={
-                            { 
-                                width: logoWidth, 
-                                height: logoHeight,
+                        source={{ uri: `${productInfo.images_url}` }} // Replace with the URL of your image
+                        style={{ 
+                                width: imageWidth, 
+                                height: imageHeight,
+                                margin: 20,
                                 marginTop: 50,
+                                borderRadius: 10,
                             }}
-                        />
-                    :
-                    <View style={{flex: 1}}>
-                        <Image
-                            source={{ uri: "https://images.openfoodfacts.org/images/products/306/832/012/4377/front_en.3.400.jpg" }} // Replace with the URL of your image
-                            style={
-                                { 
-                                    width: imageWidth, 
-                                    height: imageHeight,
-                                    margin: 20,
-                                    marginTop: 50,
-                                    borderRadius: 10,
-                                }}
-                        />
-                        <Text style={styles.text} >Nom : {productInfo.generic_name}</Text>
-                        <Text style={styles.text} >Marque : {productInfo.brands}</Text>
-                        <Text style={[styles.score, scoreStyle]}>{productInfo.co2_total}</Text>
-                    </View>
+                    />
+                    <Text style={styles.text} >Nom : {productInfo.generic_name}</Text>
+                    <Text style={styles.text} >Marque : {productInfo.brands}</Text>
+                    <Text style={[styles.score, scoreStyle]}>{productInfo.co2_total}</Text>
+                </View>
                 }
             </View>
             }
-
         </View>
 
         <View style={styles.bottombox}>
