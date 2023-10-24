@@ -38,19 +38,6 @@ export default function App() {
         }
     }
 
-    
-
-    function returnButtonTitle(){
-        let buttonTitle = "Ouvrir le scanner"
-
-        if (showQrScanner === true) 
-        {
-            buttonTitle = "Fermer le scanner"
-        }
-
-        return buttonTitle
-    }
-
   return (
     
     <View style={{flex:1}}>
@@ -62,7 +49,7 @@ export default function App() {
         <View style={styles.bottombox}>
             
             <Button
-                title={returnButtonTitle()}
+                title={showQrScanner === true ? "Ouvrir le scanner": "Fermer le scanner"}
                 color="#f194ff"
                 onPress={() => {setshowQrScanner(!showQrScanner)}}
             />
