@@ -23,7 +23,7 @@ export default function App() {
     const logoHeight = (windowHeight * 60) / 100;
 
     const widthAndHeight = 200
-    const sliceColor = ['#cc9999', '#f9a68f', '#d0554f', '#bd0909', '#9a0817',  '#d60d22']
+    const sliceColor = ['#ff8000', '#ffff00', '#ff0000', '#00ff00', '#00ffff',  '#8000ff']
 
     useEffect(() => {
         if (scanValue != null) {
@@ -148,27 +148,27 @@ export default function App() {
                             flexDirection: 'column'
                         }}>
                             <View style={{flexDirection: 'row'}}>
-                                <View style={{height: 10, width: 10, backgroundColor:"#cc9999", alignSelf:'center', marginLeft: 10}}/>
+                                <View style={{height: 10, width: 10, backgroundColor:"#ff8000", alignSelf:'center', marginLeft: 10}}/>
                                 <Text style={styles.text} >Agriculture</Text>
                             </View>
                             <View style={{flexDirection: 'row'}}>
-                                <View style={{height: 10, width: 10, backgroundColor:"#f9a68f", alignSelf:'center', marginLeft: 10}}/>
+                                <View style={{height: 10, width: 10, backgroundColor:"#ffff00", alignSelf:'center', marginLeft: 10}}/>
                                 <Text style={styles.text} >Consommation</Text>
                             </View>
                             <View style={{flexDirection: 'row'}}>
-                                <View style={{height: 10, width: 10, backgroundColor:"#d0554f", alignSelf:'center', marginLeft: 10}}/>
+                                <View style={{height: 10, width: 10, backgroundColor:"#ff0000", alignSelf:'center', marginLeft: 10}}/>
                                 <Text style={styles.text} >Distribution</Text>
                             </View>
                             <View style={{flexDirection: 'row'}}>
-                                <View style={{height: 10, width: 10, backgroundColor:"#bd0909", alignSelf:'center', marginLeft: 10}}/>
+                                <View style={{height: 10, width: 10, backgroundColor:"#00ff00", alignSelf:'center', marginLeft: 10}}/>
                                 <Text style={styles.text} >Packaging</Text>
                             </View>
                             <View style={{flexDirection: 'row'}}>
-                                <View style={{height: 10, width: 10, backgroundColor:"#9a0817", alignSelf:'center', marginLeft: 10}}/>
+                                <View style={{height: 10, width: 10, backgroundColor:"#00ffff", alignSelf:'center', marginLeft: 10}}/>
                                 <Text style={styles.text} >Processing</Text>
                             </View>
                             <View style={{flexDirection: 'row'}}>
-                                <View style={{height: 10, width: 10, backgroundColor:"#d60d22", alignSelf:'center', marginLeft: 10}}/>
+                                <View style={{height: 10, width: 10, backgroundColor:"#8000ff", alignSelf:'center', marginLeft: 10}}/>
                                 <Text style={styles.text} >Transport</Text>
                             </View>
                         </View>
