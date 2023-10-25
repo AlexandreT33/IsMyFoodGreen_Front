@@ -7,7 +7,8 @@ const logo = require('./assets/logo.png');
 export default function App() {
     const [showQrScanner, setshowQrScanner] = useState(false);
     const [scanValue, setScanValue] = useState(null);
-    const [productInfo, setProductInfo] = useState({});
+    const [productInfo, setproductInfo] = useState(null);
+    const [scoreStyle, setScoreStyle] = useState(null);
 
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
@@ -17,8 +18,6 @@ export default function App() {
 
     const logoWidth = (windowWidth * 120) / 100;
     const logoHeight = (windowHeight * 60) / 100;
-
-    let scoreStyle = null;
 
     useEffect(() => {
         if (scanValue != null) {
@@ -31,11 +30,11 @@ export default function App() {
     async function fetchBarCodeData(barcodeValue) {
         try 
         {
-            const response = await fetch(`https://a070-2a01-cb01-307f-c3aa-526e-b7d5-9e84-30b1.ngrok.io/products/${barcodeValue}`);
+            const response = await fetch(`https://20cb-2a01-cb01-306f-50a8-aa0-c1d0-6841-80d7.ngrok.io/products/${barcodeValue}`);
             const jsonData = await response.json();
             console.log(jsonData);
         
-            setProductInfo({
+            setproductInfo({
                 abbreviated_product_name: jsonData?.abbreviated_product_name_fr,
                 generic_name: jsonData?.generic_name,
                 brands: jsonData?.brands,
@@ -43,28 +42,29 @@ export default function App() {
                 co2_total: jsonData?.eco?.agribalyse?.co2_total,
             });
 
-            switch (productInfo.co2_total) {
+            switch (productInfo?.co2_total) {
                 case null:
-                    scoreStyle = styles.undefined;
+                    setScoreStyles(styles.undefined);
                     productInfo.co2_total = "Undefined";
                     break;
-                case productInfo.co2_total < 100:
-                    scoreStyle = styles.exellent;
+                case productInfo?.co2_total < 100:
+                    console.log("HAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+                    setScoreStyle(styles.exellent);
                     break;
-                case productInfo.co2_total < 500:
-                    scoreStyle = styles.very_good;
+                case productInfo?.co2_total < 500:
+                    setScoreStyles(styles.very_good);
                     break;
-                case productInfo.co2_total < 1000:
-                    scoreStyle = styles.good;
+                case productInfo?.co2_total < 1000:
+                    setScoreStyles(styles.good);
                     break;
-                case productInfo.co2_total < 2000:
-                    scoreStyle = styles.average;
+                case productInfo?.co2_total < 2000:
+                    setScoreStyles(styles.average);
                     break;
-                case productInfo.co2_total < 3000:
-                    scoreStyle = styles.bad;
+                case productInfo?.co2_total < 3000:
+                    setScoreStyles(styles.bad);
                     break;
-                case productInfo.co2_total < 4000:
-                    scoreStyle = styles.very_bad;
+                case productInfo?.co2_total < 4000:
+                    setScoreStyles(styles.very_bad);
                     break;
             }
         }
@@ -81,7 +81,7 @@ export default function App() {
             {showQrScanner === true ? <QR_Scanner setScanValue={setScanValue} /> :  
             <View style={{flex: 1}}>
                 { 
-                productInfo !== null ? 
+                productInfo === null ? 
                 <Image
                     source={logo} 
                     style={
@@ -94,7 +94,7 @@ export default function App() {
                 :
                 <View style={{flex: 1}}>
                     <Image
-                        source={{ uri: `${productInfo.images_url}` }} // Replace with the URL of your image
+                        source={{ uri: `${productInfo?.images_url}` }} // Replace with the URL of your image
                         style={{ 
                                 width: imageWidth, 
                                 height: imageHeight,
@@ -103,9 +103,9 @@ export default function App() {
                                 borderRadius: 10,
                             }}
                     />
-                    <Text style={styles.text} >Nom : {productInfo.generic_name}</Text>
-                    <Text style={styles.text} >Marque : {productInfo.brands}</Text>
-                    <Text style={[styles.score, scoreStyle]}>{productInfo.co2_total}</Text>
+                    <Text style={styles.text} >Nom : {productInfo?.generic_name}</Text>
+                    <Text style={styles.text} >Marque : {productInfo?.brands}</Text>
+                    <Text style={[styles.score, scoreStyle]}>{productInfo?.co2_total}</Text>
                 </View>
                 }
             </View>
@@ -127,7 +127,8 @@ export default function App() {
 
 const styles = StyleSheet.create({
     score: {
-        fontSize: 20,
+        fontSize: 40,
+        marginTop: 45,
     },
     undefined: {
         color: '#adadad',
