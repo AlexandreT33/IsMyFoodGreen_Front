@@ -27,46 +27,57 @@ export default function App() {
         
     }, [scanValue]);
 
+    useEffect(() => {
+        if (productInfo != null) {
+            console.log(productInfo);
+            
+            switch (true) {
+                case null:
+                    setScoreStyle(styles.undefined);
+                    productInfo.co2_total = "Undefined";
+                    break;
+                case productInfo?.co2_total < 1:
+                    setScoreStyle(styles.exellent);
+                    break;
+                case productInfo?.co2_total < 2.5:
+                    setScoreStyle(styles.very_good);
+                    break;
+                case productInfo?.co2_total < 5:
+                    setScoreStyle(styles.good);
+                    break;
+                case productInfo?.co2_total < 7.5:
+                    setScoreStyle(styles.average);
+                    break;
+                case productInfo?.co2_total < 11.25:
+                    setScoreStyle(styles.bad);
+                    break;
+                case productInfo?.co2_total < 15:
+                    setScoreStyle(styles.very_bad);
+                    break;
+            }
+        }
+        
+    }, [productInfo]);
+
     async function fetchBarCodeData(barcodeValue) {
         try 
         {
             const response = await fetch(`https://20cb-2a01-cb01-306f-50a8-aa0-c1d0-6841-80d7.ngrok.io/products/${barcodeValue}`);
             const jsonData = await response.json();
-            console.log(jsonData);
-        
+            
+            let scoreCO2 = jsonData?.eco?.agribalyse?.co2_total;
+            scoreCO2 = scoreCO2.toFixed(2);
+
+            console.log(scoreCO2);
+
             setproductInfo({
                 abbreviated_product_name: jsonData?.abbreviated_product_name_fr,
                 generic_name: jsonData?.generic_name,
                 brands: jsonData?.brands,
                 images_url: jsonData?.images?.display?.fr,
-                co2_total: jsonData?.eco?.agribalyse?.co2_total,
+                co2_total: jsonData?.eco?.agribalyse?.co2_total.toFixed(2),
             });
 
-            switch (productInfo?.co2_total) {
-                case null:
-                    setScoreStyles(styles.undefined);
-                    productInfo.co2_total = "Undefined";
-                    break;
-                case productInfo?.co2_total < 100:
-                    console.log("HAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-                    setScoreStyle(styles.exellent);
-                    break;
-                case productInfo?.co2_total < 500:
-                    setScoreStyles(styles.very_good);
-                    break;
-                case productInfo?.co2_total < 1000:
-                    setScoreStyles(styles.good);
-                    break;
-                case productInfo?.co2_total < 2000:
-                    setScoreStyles(styles.average);
-                    break;
-                case productInfo?.co2_total < 3000:
-                    setScoreStyles(styles.bad);
-                    break;
-                case productInfo?.co2_total < 4000:
-                    setScoreStyles(styles.very_bad);
-                    break;
-            }
         }
         catch (error) 
         {
@@ -81,7 +92,7 @@ export default function App() {
             {showQrScanner === true ? <QR_Scanner setScanValue={setScanValue} /> :  
             <View style={{flex: 1}}>
                 { 
-                productInfo === null ? 
+                productInfo == null ? 
                 <Image
                     source={logo} 
                     style={
@@ -106,6 +117,7 @@ export default function App() {
                     <Text style={styles.text} >Nom : {productInfo?.generic_name}</Text>
                     <Text style={styles.text} >Marque : {productInfo?.brands}</Text>
                     <Text style={[styles.score, scoreStyle]}>{productInfo?.co2_total}</Text>
+                    <Text style={styles.smallText}>kg CO2 eq/kg de produit</Text>
                 </View>
                 }
             </View>
@@ -126,9 +138,14 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+    smallText: {
+        fontSize: 15,
+        alignSelf: 'center'
+    },
     score: {
         fontSize: 40,
         marginTop: 45,
+        alignSelf: 'center'
     },
     undefined: {
         color: '#adadad',
