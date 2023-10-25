@@ -35,7 +35,7 @@ export default function App() {
     useEffect(() => {
         if (productInfo != null) {
             switch (true) {
-                case null:
+                case undefined:
                     setScoreStyle(styles.undefined);
                     productInfo.co2_total = 0;
                     setScoreClass("Inconnu");
@@ -81,6 +81,13 @@ export default function App() {
                 images_url: jsonData?.images?.display?.fr,
                 co2_total: jsonData?.eco?.agribalyse?.co2_total?.toFixed(2),
             });
+
+            console.log("ICICICICICICI : " + productInfo.co2_total)
+
+            if (productInfo.co2_total == undefined) {
+                setScoreClass("Inconnu");
+                setScoreStyle(styles.undefined);
+            }
 
             setPieChartList([
                 jsonData?.eco?.agribalyse?.co2_agriculture,
