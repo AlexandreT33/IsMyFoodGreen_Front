@@ -82,8 +82,6 @@ export default function App() {
                 co2_total: jsonData?.eco?.agribalyse?.co2_total?.toFixed(2),
             });
 
-            console.log("ICICICICICICI : " + productInfo.co2_total)
-
             if (productInfo.co2_total == undefined) {
                 setScoreClass("Inconnu");
                 setScoreStyle(styles.undefined);
