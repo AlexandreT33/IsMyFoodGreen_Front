@@ -10,6 +10,7 @@ export default function App() {
     const [scanValue, setScanValue] = useState(null);
     const [productInfo, setproductInfo] = useState(null);
     const [scoreStyle, setScoreStyle] = useState(null);
+    const [scoreClass, setScoreClass] = useState("Undefined");
     const [pieCharList, setPieChartList] = useState([200,300,400,500,100, 2]);
 
     const windowWidth = Dimensions.get('window').width;
@@ -22,57 +23,56 @@ export default function App() {
     const logoHeight = (windowHeight * 60) / 100;
 
     const widthAndHeight = 200
-    const sliceColor = ['#fbd203', '#ffb300', '#ff9100', '#ff6c00', '#ff3c00',  '#00FF00']
+    const sliceColor = ['#cc9999', '#f9a68f', '#d0554f', '#bd0909', '#9a0817',  '#d60d22']
 
     useEffect(() => {
         if (scanValue != null) {
             fetchBarCodeData(scanValue);
             setshowQrScanner(false);
         }
-        
     }, [scanValue]);
 
     useEffect(() => {
         if (productInfo != null) {
-            console.log(productInfo);
             switch (true) {
                 case null:
                     setScoreStyle(styles.undefined);
-                    productInfo.co2_total = "Undefined";
+                    productInfo.co2_total = 0;
+                    setScoreClass("Inconnu");
                     break;
                 case productInfo?.co2_total < 1:
                     setScoreStyle(styles.exellent);
+                    setScoreClass("Excellent !")
                     break;
                 case productInfo?.co2_total < 2.5:
                     setScoreStyle(styles.very_good);
+                    setScoreClass("Très bien")
                     break;
                 case productInfo?.co2_total < 5:
                     setScoreStyle(styles.good);
+                    setScoreClass("Bien")
                     break;
                 case productInfo?.co2_total < 7.5:
                     setScoreStyle(styles.average);
+                    setScoreClass("Moyen");
                     break;
                 case productInfo?.co2_total < 11.25:
                     setScoreStyle(styles.bad);
+                    setScoreClass("Mauvais");
                     break;
                 case productInfo?.co2_total < 15:
                     setScoreStyle(styles.very_bad);
+                    setScoreClass("Très mauvais")
                     break;
             }
         }
-        
     }, [productInfo]);
 
     async function fetchBarCodeData(barcodeValue) {
         try 
         {
-            const response = await fetch(`https://20cb-2a01-cb01-306f-50a8-aa0-c1d0-6841-80d7.ngrok.io/products/${barcodeValue}`);
+            const response = await fetch(`https://81c0-2a01-cb01-306f-50a8-7fa6-e669-6ea-a4db.ngrok.io/products/${barcodeValue}`);
             const jsonData = await response.json();
-            
-            let scoreCO2 = jsonData?.eco?.agribalyse?.co2_total;
-            scoreCO2 = scoreCO2.toFixed(2);
-
-            console.log(scoreCO2);
 
             setproductInfo({
                 abbreviated_product_name: jsonData?.abbreviated_product_name_fr,
@@ -81,6 +81,7 @@ export default function App() {
                 images_url: jsonData?.images?.display?.fr,
                 co2_total: jsonData?.eco?.agribalyse?.co2_total?.toFixed(2),
             });
+
             setPieChartList([
                 jsonData?.eco?.agribalyse?.co2_agriculture,
                 jsonData?.eco?.agribalyse?.co2_consumption,
@@ -123,19 +124,56 @@ export default function App() {
                                 margin: 20,
                                 marginTop: 50,
                                 borderRadius: 10,
+                                alignSelf: 'center'
                             }}
                     />
                     <Text style={styles.text} >Nom : {productInfo?.generic_name}</Text>
                     <Text style={styles.text} >Marque : {productInfo?.brands}</Text>
-                    <Text style={[styles.score, scoreStyle]}>{productInfo?.co2_total}</Text>
-                    <Text style={styles.smallText}>kg CO2 eq/kg de produit</Text>
-                    <PieChart
-                        widthAndHeight={widthAndHeight}
-                        series={pieCharList}
-                        sliceColor={sliceColor}
-                        coverRadius={0.30}
-                        coverFill={'#FFF'}
-                    />
+                    <Text style={[styles.score, scoreStyle]}>{scoreClass}</Text>
+                    <Text style={styles.smallText}>{productInfo?.co2_total} kg CO2 eq/kg de produit</Text>
+                    <View style={{
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                        marginTop: 20
+                    }}>
+                        <PieChart
+                            widthAndHeight={widthAndHeight}
+                            series={pieCharList}
+                            sliceColor={sliceColor}
+                            coverRadius={0.50}
+                            coverFill={'#FFF'}
+                            style={styles.pieChart}
+                        />
+                        <View style={{
+                            flexDirection: 'column'
+                        }}>
+                            <View style={{flexDirection: 'row'}}>
+                                <View style={{height: 10, width: 10, backgroundColor:"#cc9999", alignSelf:'center', marginLeft: 10}}/>
+                                <Text style={styles.text} >Agriculture</Text>
+                            </View>
+                            <View style={{flexDirection: 'row'}}>
+                                <View style={{height: 10, width: 10, backgroundColor:"#f9a68f", alignSelf:'center', marginLeft: 10}}/>
+                                <Text style={styles.text} >Consommation</Text>
+                            </View>
+                            <View style={{flexDirection: 'row'}}>
+                                <View style={{height: 10, width: 10, backgroundColor:"#d0554f", alignSelf:'center', marginLeft: 10}}/>
+                                <Text style={styles.text} >Distribution</Text>
+                            </View>
+                            <View style={{flexDirection: 'row'}}>
+                                <View style={{height: 10, width: 10, backgroundColor:"#bd0909", alignSelf:'center', marginLeft: 10}}/>
+                                <Text style={styles.text} >Packaging</Text>
+                            </View>
+                            <View style={{flexDirection: 'row'}}>
+                                <View style={{height: 10, width: 10, backgroundColor:"#9a0817", alignSelf:'center', marginLeft: 10}}/>
+                                <Text style={styles.text} >Processing</Text>
+                            </View>
+                            <View style={{flexDirection: 'row'}}>
+                                <View style={{height: 10, width: 10, backgroundColor:"#d60d22", alignSelf:'center', marginLeft: 10}}/>
+                                <Text style={styles.text} >Transport</Text>
+                            </View>
+                        </View>
+                    </View>
+                    
                 </View>
                 }
             </View>
@@ -143,11 +181,9 @@ export default function App() {
         </View>
 
         <View style={styles.bottombox}>
-            
             <Button
                 title={showQrScanner === true ? "Fermer le scanner" : "Ouvrir le scanner"}
                 color="#008080"
-                
                 onPress={() => {setshowQrScanner(!showQrScanner)}}
             />
         </View>
@@ -156,13 +192,17 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+    pieChart: {
+        marginTop: 10,
+        alignSelf: 'center'
+    },
     smallText: {
         fontSize: 15,
         alignSelf: 'center'
     },
     score: {
         fontSize: 40,
-        marginTop: 45,
+        marginTop: 10,
         alignSelf: 'center'
     },
     undefined: {
@@ -170,33 +210,33 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     exellent: {
-        color: '#17fc03',
+        color: '#03ff20',
         fontWeight: 'bold',
     },
     very_good: {
-      color: '#20f77a',
+      color: '#11f788',
       fontWeight: 'bold',
     },
     good: {
-      color: '#00fbff',
+      color: '#27b4f5',
       fontWeight: 'bold',
     },
     average: {
-      color: '#adadad',
+      color: '#f5cd02',
       fontWeight: 'bold',
     },
     bad: {
-      color: '#ff8000',
+      color: '#f59402',
       fontWeight: 'bold',
     },
     very_bad: {
-      color: '#ff0000',
+      color: '#f51302',
       fontWeight: 'bold',
     },
-
     text: {
         margin: 3,
         fontWeight: 'bold',
+        alignSelf: 'center'
     },
     topbox: {
         backgroundColor: '#D3D3D3',
@@ -210,7 +250,6 @@ const styles = StyleSheet.create({
     bottombox: {
         backgroundColor: '#2E2E2E',
         flex: 1,
-        padding: 20,
     }
 });
 
