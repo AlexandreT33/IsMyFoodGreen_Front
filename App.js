@@ -1,6 +1,7 @@
 import React, { useState, useEffect} from 'react';
 import { StyleSheet, Text, View, Button, Dimensions, Image } from 'react-native';
 import QR_Scanner from './src/tools/Scanner'
+import PieChart from 'react-native-pie-chart'
 
 const logo = require('./assets/logo.png');
 
@@ -9,6 +10,7 @@ export default function App() {
     const [scanValue, setScanValue] = useState(null);
     const [productInfo, setproductInfo] = useState(null);
     const [scoreStyle, setScoreStyle] = useState(null);
+    const [pieCharList, setPieChartList] = useState([200,300,400,500,100, 2]);
 
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
@@ -18,6 +20,9 @@ export default function App() {
 
     const logoWidth = (windowWidth * 120) / 100;
     const logoHeight = (windowHeight * 60) / 100;
+
+    const widthAndHeight = 200
+    const sliceColor = ['#fbd203', '#ffb300', '#ff9100', '#ff6c00', '#ff3c00',  '#00FF00']
 
     useEffect(() => {
         if (scanValue != null) {
@@ -30,7 +35,6 @@ export default function App() {
     useEffect(() => {
         if (productInfo != null) {
             console.log(productInfo);
-            
             switch (true) {
                 case null:
                     setScoreStyle(styles.undefined);
@@ -75,9 +79,16 @@ export default function App() {
                 generic_name: jsonData?.generic_name,
                 brands: jsonData?.brands,
                 images_url: jsonData?.images?.display?.fr,
-                co2_total: jsonData?.eco?.agribalyse?.co2_total.toFixed(2),
+                co2_total: jsonData?.eco?.agribalyse?.co2_total?.toFixed(2),
             });
-
+            setPieChartList([
+                jsonData?.eco?.agribalyse?.co2_agriculture,
+                jsonData?.eco?.agribalyse?.co2_consumption,
+                jsonData?.eco?.agribalyse?.co2_distribution,
+                jsonData?.eco?.agribalyse?.co2_packaging,
+                jsonData?.eco?.agribalyse?.co2_processing,
+                jsonData?.eco?.agribalyse?.co2_transportation
+            ])
         }
         catch (error) 
         {
@@ -118,6 +129,13 @@ export default function App() {
                     <Text style={styles.text} >Marque : {productInfo?.brands}</Text>
                     <Text style={[styles.score, scoreStyle]}>{productInfo?.co2_total}</Text>
                     <Text style={styles.smallText}>kg CO2 eq/kg de produit</Text>
+                    <PieChart
+                        widthAndHeight={widthAndHeight}
+                        series={pieCharList}
+                        sliceColor={sliceColor}
+                        coverRadius={0.30}
+                        coverFill={'#FFF'}
+                    />
                 </View>
                 }
             </View>
@@ -195,3 +213,5 @@ const styles = StyleSheet.create({
         padding: 20,
     }
 });
+
+
