@@ -34,6 +34,10 @@ export default function App() {
 
     useEffect(() => {
         if (productInfo != null) {
+            if (productInfo?.co2_total == undefined) {
+                setScoreClass("Inconnu");
+                setScoreStyle(styles.undefined);
+            }
             switch (true) {
                 case undefined:
                     setScoreStyle(styles.undefined);
@@ -81,11 +85,6 @@ export default function App() {
                 images_url: jsonData?.images?.display?.fr,
                 co2_total: jsonData?.eco?.agribalyse?.co2_total?.toFixed(2),
             });
-
-            if (productInfo?.co2_total == undefined) {
-                setScoreClass("Inconnu");
-                setScoreStyle(styles.undefined);
-            }
 
             setPieChartList([
                 jsonData?.eco?.agribalyse?.co2_agriculture,
