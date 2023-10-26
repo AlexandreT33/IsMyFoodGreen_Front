@@ -71,7 +71,7 @@ export default function App() {
     async function fetchBarCodeData(barcodeValue) {
         try 
         {
-            const response = await fetch(`https://81c0-2a01-cb01-306f-50a8-7fa6-e669-6ea-a4db.ngrok.io/products/${barcodeValue}`);
+            const response = await fetch(`https://9de2-77-205-153-238.ngrok-free.app/products/${barcodeValue}`);
             const jsonData = await response.json();
 
             setproductInfo({
@@ -82,7 +82,7 @@ export default function App() {
                 co2_total: jsonData?.eco?.agribalyse?.co2_total?.toFixed(2),
             });
 
-            if (productInfo.co2_total == undefined) {
+            if (productInfo?.co2_total == undefined) {
                 setScoreClass("Inconnu");
                 setScoreStyle(styles.undefined);
             }
